@@ -40,50 +40,36 @@
       </div>
     </nav>
 
-    <div class="container-fluid content">
+    <div class="content container-fluid">
       <div id="meatshield" class="row" >
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4>
               Fixed Header Scrolling Table 
             </h4>
-            <button id="generate-character" type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>
+            <button id="generate-character" type="button" class="btn btn-primary btn-lg btn-block">Generate Meatshield</button>
           </div>
-          <div class="div-table-content">
-            <table id="character-table" class="table table-bordered table-striped table-fixed">
+          <div class="table-responsive scrollable-area">
+            <table id="character-table" class="table table-striped table-hover table-bordered">
               <thead>
-                <tr>
-                  <th class="col-xs-2">#</th>
-                  <th class="col-xs-4">Name</th>
-                  <th class="col-xs-4">Type</th>
-                  <th class="col-xs-2">HP</th>
-                  <th class="col-xs-4">Weapon</th>
-                  <th class="col-xs-4">Armor</th>
-                  <th class="col-xs-4">Inventory</th>
-                </tr>
+                <tr>  
+                  <th class="col-sm-3">Name</th>
+                  <th class="col-sm-2">Type</th>
+                  <th class="col-sm-1">HP</th>
+                  <th class="col-sm-2">Weapon</th>
+                  <th class="col-sm-2">Armor</th>
+                  <th class="col-sm-2">Inventory</th>
+                </tr>              
               </thead>
               <tbody>
-                <tr>
-                  <td class="col-xs-2">1</td>
-                  <td class="col-xs-4">Mike Adams</td>
-                  <td class="col-xs-4">Man-at-arms</td>
-                  <td class="col-xs-2">6</td>
-                  <td class="col-xs-8">Spear, shield</td>
-                </tr>
-                <tr>
-                  <td class="col-xs-2">2</td>
-                  <td class="col-xs-4">Mike Adams 2</td>
-                  <td class="col-xs-4">Man-at-arms</td>
-                  <td class="col-xs-2">6</td>
-                  <td class="col-xs-8">Spear, shield</td>
-                </tr>
+                <tr></tr>
               </tbody>
-            </table>
+            </div>
          </div>
         </div>
       </div>
     </div>
-    <div class="container-fluid content hidden">
+    <div class="content hidden">
       <div id="foo" class="row" >
         <div class="panel panel-default">
           <h1>Foobar</h1>
@@ -98,6 +84,7 @@
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
         <script src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/vendor/stickytableheaders.min.js"></script>
 
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>

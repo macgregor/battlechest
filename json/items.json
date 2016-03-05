@@ -1,14 +1,28 @@
 {
+  "races" : [
+    {"id" : 0, "name" : "dwarf"},
+    {"id" : 1, "name" : "gnome"},
+    {"id" : 2, "name" : "human"},
+    {"id" : 3, "name" : "half-orc"},
+    {"id" : 4, "name" : "elf"}
+  ],
+  "types" : [
+    {"id" : 0, "name" : "man-at-arms"},
+    {"id" : 1, "name" : "torch bearer", "dependencies" : ["items.inventory[0]"]}
+  ],
   "items" : {
     "weapons":[
-      { "name" : "dagger", "damage" : "1d4", "description" : "a small dagger" },
-      { "name": "short sword", "damage" : "1d6", "description" : "a short sword" }
+      { "id" : 0, "name" : "dagger", "damage" : "1d4", "description" : "a small dagger" },
+      { "id" : 1, "name": "short sword", "damage" : "1d6", "description" : "a short sword" },
+      { "id" : 2, "name": "mace", "damage" : "1d6", "description" : "a mace" },
+      { "id" : 3, "name": "short bow", "damage" : "1d6", "description" : "a short bow", "dependencies" : ["items.inventory[1]"] }
     ],
     "armor":[
-      { "name" : "leather", "ac": "8", "description" : "basic leather armor" }
+      { "id" : 0, "name" : "leather", "ac": "8", "description" : "basic leather armor" }
     ],
     "inventory":[
-      { "name" : "torch", "description": "provides light in the darkness"}
+      { "id" : 0, "name" : "torch", "description": "provides light in the darkness", "quantity" : "1d4" },
+      { "id" : 1, "name" : "arrows", "description" : "arrows for a bow", "quantity" : "2d10+5" }
     ]
   }
 }
