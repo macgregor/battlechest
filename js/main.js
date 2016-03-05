@@ -10,3 +10,13 @@ $(document).ready(function() {
         $('#character-table tr:last').after(row_html);
     }); 
 });
+
+$(document).ready(function() {
+  $(".nav a").on("click", function(){
+    $(".nav").find(".active").removeClass("active");
+    $(this).parent().addClass("active");
+
+    $('div.container').addClass("hidden");
+    $( $(this).attr('href') ).parent().removeClass("hidden");
+  });
+});

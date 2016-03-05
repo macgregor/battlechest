@@ -27,23 +27,21 @@
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">D&D Battlechest</a>
-        </div>
-        </div><!--/.navbar-collapse -->
+
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">D&D Battlechest</a>
       </div>
-    </nav>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#meatshield">Meatshield Generator</a></li>
+        <li><a href="#foo">Foo</a></li>
+      </ul>
+    </div>
+  </nav>
 
     <div class="container">
-      <div class="row">
+      <div id="meatshield" class="row" >
         <div class="panel panel-default">
           <div class="panel-heading">
             <h4>
@@ -78,6 +76,13 @@
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+    <div class="container hidden">
+      <div id="foo" class="row" >
+        <div class="panel panel-default">
+          <h1>Foobar</h1>
         </div>
       </div>
     </div>
