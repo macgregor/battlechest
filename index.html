@@ -28,19 +28,19 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">D&D Battlechest</a>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">D&D Battlechest</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#meatshield">Meatshield Generator</a></li>
+          <li><a href="#foo">Foo</a></li>
+        </ul>
       </div>
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#meatshield">Meatshield Generator</a></li>
-        <li><a href="#foo">Foo</a></li>
-      </ul>
-    </div>
-  </nav>
+    </nav>
 
-    <div class="container">
+    <div class="container-fluid content">
       <div id="meatshield" class="row" >
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -49,46 +49,49 @@
             </h4>
             <button id="generate-character" type="button" class="btn btn-primary btn-lg btn-block">Block level button</button>
           </div>
-          <table id="character-table" class="table table-fixed">
-            <thead>
-              <tr>
-                <th class="col-xs-2">#</th>
-                <th class="col-xs-4">Name</th>
-                <th class="col-xs-4">Type</th>
-                <th class="col-xs-2">HP</th>
-                <th class="col-xs-8">Gear</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="col-xs-2">1</td>
-                <td class="col-xs-4">Mike Adams</td>
-                <td class="col-xs-4">Man-at-arms</td>
-                <td class="col-xs-2">6</td>
-                <td class="col-xs-8">Spear, shield</td>
-              </tr>
-              <tr>
-                <td class="col-xs-2">2</td>
-                <td class="col-xs-4">Mike Adams 2</td>
-                <td class="col-xs-4">Man-at-arms</td>
-                <td class="col-xs-2">6</td>
-                <td class="col-xs-8">Spear, shield</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="div-table-content">
+            <table id="character-table" class="table table-bordered table-striped table-fixed">
+              <thead>
+                <tr>
+                  <th class="col-xs-2">#</th>
+                  <th class="col-xs-4">Name</th>
+                  <th class="col-xs-4">Type</th>
+                  <th class="col-xs-2">HP</th>
+                  <th class="col-xs-4">Weapon</th>
+                  <th class="col-xs-4">Armor</th>
+                  <th class="col-xs-4">Inventory</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="col-xs-2">1</td>
+                  <td class="col-xs-4">Mike Adams</td>
+                  <td class="col-xs-4">Man-at-arms</td>
+                  <td class="col-xs-2">6</td>
+                  <td class="col-xs-8">Spear, shield</td>
+                </tr>
+                <tr>
+                  <td class="col-xs-2">2</td>
+                  <td class="col-xs-4">Mike Adams 2</td>
+                  <td class="col-xs-4">Man-at-arms</td>
+                  <td class="col-xs-2">6</td>
+                  <td class="col-xs-8">Spear, shield</td>
+                </tr>
+              </tbody>
+            </table>
+         </div>
         </div>
       </div>
     </div>
-    <div class="container hidden">
+    <div class="container-fluid content hidden">
       <div id="foo" class="row" >
         <div class="panel panel-default">
           <h1>Foobar</h1>
         </div>
       </div>
     </div>
-      <hr>
 
-      <footer>
+      <footer class="navbar-fixed-bottom">
         <p>&copy; Company 2015</p>
       </footer>
     </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

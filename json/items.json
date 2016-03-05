@@ -1,0 +1,14 @@
+{
+  "items" : {
+    "weapons":[
+      { "name" : "dagger", "damage" : "1d4", "description" : "a small dagger" },
+      { "name": "short sword", "damage" : "1d6", "description" : "a short sword" }
+    ],
+    "armor":[
+      { "name" : "leather", "ac": "8", "description" : "basic leather armor" }
+    ],
+    "inventory":[
+      { "name" : "torch", "description": "provides light in the darkness"}
+    ]
+  }
+}
