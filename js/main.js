@@ -24,25 +24,6 @@ function dice_roll(dice_frmt){
   return roll;
 }
 
-function load_data(file, callback){
-    var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', file, true); // Replace 'my_data' with the path to your file
-    xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
-            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-            try {
-              json = JSON.parse(xobj.responseText);
-              callback(json);
-            }
-            catch(err) {
-              console.log(err);
-            }
-          }
-    };
-    xobj.send(null); 
-}
-
 function generate_weapon(json){
   var weapon = rand_range(1, json.items.weapons.length) - 1;
   return "<p><b>" + json.items.weapons[weapon].name + "</b> ("+json.items.weapons[weapon].damage+")<br/>" +
@@ -67,30 +48,31 @@ function generate_inventory(json){
     json.items.inventory[inventory].description + "</p>";
 }
 
-function generate_meatshield(){
-  load_data('./json/items.json', function(json){
-    var hp = dice_roll("1d6");
-    var name = "Someone";
-    var type = "Man-at-arms";
+function generate_meatshield(json){
+  var hp = dice_roll("1d6");
+  var name = "Someone";
+  var type = "Man-at-arms";
 
-    var row_html = '<tr class="table-hover">' +
-      '<td class="col-sm-3">'+name+'</td>'+
-      '<td class="col-sm-2">'+type+'</td>'+
-      '<td class="col-sm-1">'+hp+'</td>'+
-      '<td class="col-sm-2">'+generate_weapon(json)+'</td>'+
-      '<td class="col-sm-2">'+generate_armor(json)+'</td>'+
-      '<td class="col-sm-2">'+generate_inventory(json)+'</td>'+
-      '</tr>';
+  var row_html = '<tr class="table-hover">' +
+    '<td class="col-sm-3">'+name+'</td>'+
+    '<td class="col-sm-2">'+type+'</td>'+
+    '<td class="col-sm-1">'+hp+'</td>'+
+    '<td class="col-sm-2">'+generate_weapon(json)+'</td>'+
+    '<td class="col-sm-2">'+generate_armor(json)+'</td>'+
+    '<td class="col-sm-2">'+generate_inventory(json)+'</td>'+
+    '</tr>';
 
-    $('#character-table tbody tr:last').after(row_html);
-  });
+  $('#character-table tbody tr:last').after(row_html);
 }
 
 $(document).ready(function() {
   $('table').stickyTableHeaders({scrollableArea: $('.scrollable-area')});
 
   $("#generate-character").click(function(){
-    generate_meatshield();
+    // Loads content from external json
+    $.getJSON( 'json/items.json', function( data ) {
+        generate_meatshield(data);
+    });
   }); 
 
   $(".nav a").on("click", function(){
