@@ -1,10 +1,15 @@
 function Generator(){
-  this.json_data;
-
-  $.getJSON( 'json/items.json', function( data ) {
-    this.json_data = data;
+  var tmp;
+  $.ajax({
+  	url: '/json/items.json',
+  	async: false,
+  	dataType: 'json',
+  	success: function(data) {
+  		tmp = data;
+  	}
   });
 
+  this.json_data = tmp;
   console.log(this.json_data);
 }
 
@@ -35,6 +40,8 @@ Generator.prototype.dice_roll= function(dice_frmt){
 }
 
 Generator.prototype.generate_weapon = function(){
+  console.log('Generating weapon.');
+
   var index = this.rand_range(1, this.json_data.items.weapons.length) - 1;
   var weapon = this.json_data.items.weapons[index];
 
@@ -42,6 +49,8 @@ Generator.prototype.generate_weapon = function(){
 };
 
 Generator.prototype.generate_item = function(){
+  console.log('Generating item.');
+
   var index = this.rand_range(1, this.json_data.items.inventory.length) - 1;
   var item = this.json_data.items.inventory[index];
   var quantity = "1";
@@ -54,6 +63,8 @@ Generator.prototype.generate_item = function(){
 };
 
 Generator.prototype.generate_armor = function(){
+  console.log('Generate armor.');
+
   var index = this.rand_range(1, this.json_data.items.armor.length) - 1;
   var armor = this.json_data.items.armor[index];
 
@@ -61,14 +72,16 @@ Generator.prototype.generate_armor = function(){
 };
 
 Generator.prototype.generate_meatshield = function(){
+  console.log('Generating meatshield');
+
   var hp = this.dice_roll("1d6");
   var name = "Someone";
   var type = "Man-at-arms";
+  var race = "dwarf";
   var weapon = this.generate_weapon();
   var armor = this.generate_armor();
   var inventory = this.generate_item();
-
-  return new Meatshield(name, type, hp, weapon, armor, inventory);
+  return new Meatshield(name, type, race, hp, weapon, armor, inventory);
 };
 
 function Weapon(name, damage, description){
@@ -83,7 +96,7 @@ Weapon.prototype.html = function(){
 
 function Item(name, quantity, description){
   this.name = name;
-  this.damage = damage;
+  this.quantity = quantity;
   this.description = description;
 }
 

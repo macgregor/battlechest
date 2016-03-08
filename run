@@ -1,0 +1,5 @@
+#! /bin/bash
+sudo docker build -t battlechest .
+sudo docker stop battlechest &>/dev/null
+sudo docker rm battlechest &>/dev/null
+sudo docker run -d -p 80:80 --name battlechest battlechest
