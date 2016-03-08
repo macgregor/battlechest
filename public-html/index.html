@@ -34,60 +34,67 @@
           <a class="navbar-brand" href="#">D&D Battlechest</a>
         </div>
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#meatshield">Meatshield Generator</a></li>
-          <li><a href="#foo">Foo</a></li>
+          <li class="active"><a href="#meatshields">Meatshield Generator</a></li>
         </ul>
       </div>
     </nav>
 
-    <div class="content container-fluid">
-      <div id="meatshield" class="row" >
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4>
-              Fixed Header Scrolling Table 
-            </h4>
-            <button id="generate-character" type="button" class="btn btn-primary btn-lg btn-block">Generate Meatshield</button>
-          </div>
-          <div class="table-responsive scrollable-area">
-            <table id="character-table" class="table table-striped table-hover table-bordered">
-              <thead>
-                <tr>  
-                  <th class="col-sm-3">Name</th>
-                  <th class="col-sm-2">Type</th>
-                  <th class="col-sm-1">HP</th>
-                  <th class="col-sm-2">Weapon</th>
-                  <th class="col-sm-2">Armor</th>
-                  <th class="col-sm-2">Inventory</th>
-                </tr>              
-              </thead>
-              <tbody>
-                <tr></tr>
-              </tbody>
+    <div class="meatshields content">
+      <div id="header">
+        <button id="generate-character" type="button" class="btn btn-primary btn-lg btn-block">Generate Meatshield</button>
+      </div>
+
+      <div id="meatshield"></div>
+    </div>
+    <!-- Handlebars #stuff template -->
+    <script id="template" type="text/x-handlebars-template">
+      {{#characters}}
+      <div>
+          <div class='name'>{{name}}</div>
+          <div class='type'>{{type}}</div>
+          <div class='race'>{{race}}</div>
+          <div class='hp'>{{hp}}</div>
+          <div class='weapons'>
+            {{#weapons}}
+            <div>
+              <div class='weapon-name'>{{name}}</div>
+              <div class='weapon-damage'>{{damage}}</div>
+              <div class='weapon-description'>{{description}}</div>
             </div>
-         </div>
+            {{/weapons}}
+          </div>
+          <div class='armor'>
+            {{#armor}}
+            <div>
+              <div class='armor-name'>{{name}}</div>
+              <div class='armor-ac'>{{ac}}</div>
+              <div class='armor-description'>{{description}}</div>
+            </div>
+            {{/armor}}
+          </div>
+          <div class='inventory'>
+            {{#inventory}}
+            <div>
+              <div class='item-name'>{{name}}</div>
+              <div class='item-quantity'>{{quantity}}</div>
+              <div class='item-description'>{{description}}</div>
+            </div>
+            {{/inventory}}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="content hidden">
-      <div id="foo" class="row" >
-        <div class="panel panel-default">
-          <h1>Foobar</h1>
-        </div>
-      </div>
-    </div>
+      {{/characters}}
+    </script>
+    </div> <!-- /container -->        
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
 
-      <footer class="navbar-fixed-bottom">
-        <p>&copy; Company 2015</p>
-      </footer>
-    </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/vendor/handlebars-v1.3.0.js"></script>
+    <script src="js/vendor/masonry.pkgd.min.js"></script>
 
-        <script src="js/vendor/bootstrap.min.js"></script>
-        <script src="js/vendor/stickytableheaders.min.js"></script>
-
-        <script src="js/plugins.js"></script>
-        <script src="js/meatshield.js"></script>
-        <script src="js/main.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/meatshield.js"></script>
+    <script src="js/main.js"></script>
     </body>
 </html>

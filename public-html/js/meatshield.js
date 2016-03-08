@@ -90,29 +90,17 @@ function Weapon(name, damage, description){
   this.description = description;
 }
 
-Weapon.prototype.html = function(){
-  return "<p><b>" + this.name + "</b> (" + this.damage + ")<br/>" + this.description + "</p>";
-}
-
 function Item(name, quantity, description){
   this.name = name;
   this.quantity = quantity;
   this.description = description;
 }
 
-Item.prototype.html = function(){
-  return "<p><b>" + this.name + "</b>(" + this.quantity + ")<br/>" + this.description + "</p>";
-};
-
 function Armor(name, ac, description){
   this.name = name;
   this.ac = ac;
   this.description = description;
 }
-
-Armor.prototype.html = function(){
-  return "<p><b>" + this.name + "</b> (AC " + this.ac + ")<br/>" + this.description + "</p>";
-};
 
 function Meatshield (name, type, race, hp, weapons, armor, inventory) {
   this.name = name;
@@ -123,14 +111,3 @@ function Meatshield (name, type, race, hp, weapons, armor, inventory) {
   this.armor = armor;
   this.inventory = inventory;
 }
-
-Meatshield.prototype.html = function(){
-  return '<tr class="table-hover">' +
-    '<td class="col-sm-3">'+this.name+'</td>'+
-    '<td class="col-sm-2">'+this.type+'</td>'+
-    '<td class="col-sm-1">'+this.hp+'</td>'+
-    '<td class="col-sm-2">'+this.weapons.html()+'</td>'+
-    '<td class="col-sm-2">'+this.armor.html()+'</td>'+
-    '<td class="col-sm-2">'+this.inventory.html()+'</td>'+
-    '</tr>';
-};
