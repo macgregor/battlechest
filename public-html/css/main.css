@@ -1,0 +1,52 @@
+#meatshield {
+  position: relative;
+  top: 2em;
+  margin: 0 auto;
+}
+
+.character {
+  border-radius: 10px;
+  width:  20em;
+  height: 25em;
+  background: #fff;
+  border: 2px solid #46494C;
+  padding: .5em;
+  color: #46494C;
+  overflow: hidden;
+  margin: .6em 0 .6em 0;
+  box-shadow: 0px 5px 10px 0px rgba(50, 50, 50, 0.75);
+}
+
+.character .type {
+  position: relative;
+  top: -2.25em;
+  text-align: left;
+  font-size: 1.25em;
+  font-weight: bold;
+  width: 100%;
+  padding: .25em;
+  font-weight: 500;
+}
+
+.character .name {
+  position: relative;
+  z-index: 2;
+  top: -1.25em;
+  text-align: right;
+  font-size: 2em;
+  width: 100%;
+  padding-right: .0825em;
+  color: #46494C;
+  font-weight: 400;
+}
+
+.character .race {
+  position: relative;
+  top: -2.25em;
+  text-align: left;
+  font-size: 1.25em;
+  font-weight: bold;
+  width: 100%;
+  padding: .25em;
+  font-weight: 500;
+}

@@ -1,10 +1,10 @@
 // Configures Masonry for a responsive card layout
 function runMasonry() {
-  var $container = $('#meatshield');
+  var container = $('#meatshield');
 
-  $container.masonry({
+  container.masonry({
     columnWidth: 60,
-    itemSelector: '.item',
+    itemSelector: '.character',
     containerStyle: null,
     isAnimated: true,
     gutter: 14,
@@ -12,22 +12,16 @@ function runMasonry() {
   });
 }
 
-function runHandlebars(characters){
-  var source = $("#template").html();
-  var template = Handlebars.compile(source);
-
-  $('#meatshield').append(template(characters));
-
-  runMasonry();
-}
-
 $(document).ready(function() {
 
   var generator = new Generator();
-  var characters = {characters:[]}
+  var source = $("#template").html();
+  var template = Handlebars.compile(source);
+  runMasonry();
+  
   $("#generate-character").click(function(){
-      characters['characters'].push(generator.generate_meatshield());
-      console.log(characters);
-      runHandlebars(characters);
+    $('#meatshield').append(template(generator.generate_meatshield()));
+    $('#meatshield').masonry('reloadItems');
+    $('#meatshield').masonry('layout');
   }); 
 });
