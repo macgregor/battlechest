@@ -1,7 +1,7 @@
 function Generator(){
   var tmp;
   $.ajax({
-  	url: '/data/items.json',
+  	url: 'data/items.json',
   	async: false,
   	dataType: 'json',
   	success: function(data) {
