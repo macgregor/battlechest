@@ -39,42 +39,38 @@
           </ul>
         </div>
       </nav>
-      <div id="header">
+      <div id="meatshield"></div>
+      <div id="footer" class='navbar-fixed-bottom'>
         <button id="generate-character" type="button" class="btn btn-primary btn-lg btn-block">Generate Meatshield</button>
       </div>
-
-      <div id="meatshield"></div>
     </div>
 
     <script id="template" type="text/x-handlebars-template">
       <div class='character'>
           <div class='name'>{{name}}</div>
-          <div class='type'>{{type}}</div>
           <div class='race'>{{race}}</div>
-          <div class='hp'>{{hp}}</div>
+          <div class='type'>{{type}}</div>
+          <div class='hp'>HP: {{hp}}</div>
           <div class='weapons'>
             {{#weapons}}
-            <div>
-              <div class='weapon-name'>{{name}}</div>
-              <div class='weapon-damage'>{{damage}}</div>
+            <div class='weapon'>
+              <div class='weapon-name'>{{name}} (Damage: <b>{{damage}}</b>)</div>
               <div class='weapon-description'>{{description}}</div>
             </div>
             {{/weapons}}
           </div>
-          <div class='armor'>
+          <div class='armors'>
             {{#armor}}
-            <div>
-              <div class='armor-name'>{{name}}</div>
-              <div class='armor-ac'>{{ac}}</div>
+            <div class='armor'>
+              <div class='armor-name'>{{name}} (AC: <b>{{ac}}</b>)</div>
               <div class='armor-description'>{{description}}</div>
             </div>
             {{/armor}}
           </div>
           <div class='inventory'>
             {{#inventory}}
-            <div>
-              <div class='item-name'>{{name}}</div>
-              <div class='item-quantity'>{{quantity}}</div>
+            <div class='item'>
+              <div class='item-name'>{{name}} (<b>{{quantity}}</b>)</div>
               <div class='item-description'>{{description}}</div>
             </div>
             {{/inventory}}

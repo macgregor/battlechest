@@ -1,13 +1,29 @@
+body {
+  margin-bottom: 6em;
+}
+
 #meatshield {
   position: relative;
   top: 2em;
-  margin: 0 auto;
+  margin: 0 auto 2em;
+}
+
+#footer{
+  width: 100%;
+  text-align: center;
+  margin-bottom: .25em;
+  margin-top: .25em;
+}
+
+#generate-character{
+  width: 20em;
+  height: 5em;
+  display: inline-block;
 }
 
 .character {
   border-radius: 10px;
   width:  20em;
-  height: 25em;
   background: #fff;
   border: 2px solid #46494C;
   padding: .5em;
@@ -19,7 +35,6 @@
 
 .character .type {
   position: relative;
-  top: -2.25em;
   text-align: left;
   font-size: 1.25em;
   font-weight: bold;
@@ -31,8 +46,7 @@
 .character .name {
   position: relative;
   z-index: 2;
-  top: -1.25em;
-  text-align: right;
+  text-align: left;
   font-size: 2em;
   width: 100%;
   padding-right: .0825em;
@@ -42,11 +56,51 @@
 
 .character .race {
   position: relative;
-  top: -2.25em;
   text-align: left;
   font-size: 1.25em;
   font-weight: bold;
   width: 100%;
   padding: .25em;
   font-weight: 500;
+}
+
+.character .hp{
+  font-size: 1.25em;
+  font-weight: 500;
+  padding: .25em;
+}
+
+.weapon .weapon-name{
+  font-size: 1.25em;
+  width: 100%;
+  font-weight: 500;
+}
+
+.weapon .weapon-description{
+  font-size: .9em;
+  width: 100%;
+  text-align: right;
+  font-weight: 500;
+}
+
+.armor .armor-name{
+  width: 100%;
+  font-size: 1.25em;
+}
+
+.armor .armor-description{
+  width: 100%;
+  text-align: right;  
+  font-size: .9em;
+}
+
+.item .item-name{
+  font-size: 1.25em;
+  width: 100%
+}
+
+.item .item-description{
+  width: 100%;
+  text-align: right;
+  font-size: .9em;
 }
