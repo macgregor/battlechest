@@ -4,14 +4,12 @@ body {
 
 #meatshield {
   position: relative;
-  top: 2em;
   margin: 0 auto 2em;
 }
 
 #footer{
   width: 100%;
   text-align: center;
-  margin-bottom: .25em;
   margin-top: .25em;
 }
 
