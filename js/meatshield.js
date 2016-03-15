@@ -1,7 +1,7 @@
 function Generator(){
   var tmp;
   $.ajax({
-  	url: '/json/items.json',
+  	url: '/data/items.json',
   	async: false,
   	dataType: 'json',
   	success: function(data) {
@@ -71,13 +71,39 @@ Generator.prototype.generate_armor = function(){
   return new Armor(armor.name, armor.ac, armor.description);
 };
 
+Generator.prototype.generate_race = function(){
+  console.log('Generate race.');
+
+  var index = this.rand_range(1, this.json_data.races.length) - 1;
+  var race = this.json_data.races[index];
+
+  return race.name;
+};
+
+Generator.prototype.generate_type = function(){
+  console.log('Generate type.');
+
+  var index = this.rand_range(1, this.json_data.types.length) - 1;
+  var type = this.json_data.types[index];
+
+  return type.name;
+};
+
+Generator.prototype.generate_name = function(){
+  console.log('Generate name.');
+
+  var generator = NameGen.compile("sV'i");
+
+  return generator.toString();
+};
+
 Generator.prototype.generate_meatshield = function(){
   console.log('Generating meatshield');
 
   var hp = this.dice_roll("1d6");
-  var name = "Someone";
-  var type = "Man-at-arms";
-  var race = "dwarf";
+  var name = this.generate_name();
+  var type = this.generate_type();
+  var race = this.generate_race();
   var weapon = this.generate_weapon();
   var armor = this.generate_armor();
   var inventory = this.generate_item();
