@@ -104,9 +104,9 @@ Generator.prototype.generate_meatshield = function(){
   var name = this.generate_name();
   var type = this.generate_type();
   var race = this.generate_race();
-  var weapon = this.generate_weapon();
-  var armor = this.generate_armor();
-  var inventory = this.generate_item();
+  var weapon = [this.generate_weapon()];
+  var armor = [this.generate_armor()];
+  var inventory = [this.generate_item()];
   return new Meatshield(name, type, race, hp, weapon, armor, inventory);
 };
 
@@ -136,4 +136,37 @@ function Meatshield (name, type, race, hp, weapons, armor, inventory) {
   this.weapons = weapons;
   this.armor = armor;
   this.inventory = inventory;
+}
+
+function getLocalData(){
+  var userData = [];
+
+  if( supports_html5_storage() ){
+    userData = JSON.parse(localStorage.getItem('meatshields'));
+    if(userData == null){
+      userData = []
+    }
+  }
+  return userData;
+}
+
+function updateLocalData(data){
+  console.log(data);
+  if( supports_html5_storage() ){
+    localStorage.setItem('meatshields', JSON.stringify(data))
+  }
+}
+
+function clearLocalData(){
+  if( supports_html5_storage() ){
+    localStorage.clear()
+  }
+}
+
+function supports_html5_storage() {
+  try {
+    return 'localStorage' in window && window['localStorage'] !== null;
+  } catch (e) {
+    return false;
+  }
 }
