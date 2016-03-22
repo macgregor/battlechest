@@ -7,9 +7,9 @@
     { "name" : "elf"}
   ],
   "types" : [
-    { "name" : "man-at-arms", "weight" : ".1" },
+    { "name" : "man-at-arms", "weight" : ".8" },
     { "name" : "torch bearer",
-      "weight" : ".9",
+      "weight" : ".2",
       "weapons": [
         { "name" : "dagger", "damage" : "1d4", "description" : "a small dagger" }
       ],

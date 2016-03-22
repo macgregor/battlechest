@@ -21,8 +21,14 @@ Generator.load_json = function(filename='data/items.json'){
 /*
  * Generate a random number between low and high, inclusive
  */
-Generator.rand_range = function(low, high){
-  return Math.floor((Math.random() * high) + low);
+Generator.rand_int = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+//function to get random number upto m
+Generator.rand_float = function(min, max)
+{
+  return min + (Math.random() * (max - min));
 }
 
 /*
@@ -52,7 +58,7 @@ Generator.dice_roll= function(dice_frmt){
   var roll = 0;
 
   for(var i = 0; i < matches[1]; i++){
-    roll += this.rand_range(1, sides);
+    roll += this.rand_int(1, sides);
   }
 
   roll += bonus;
@@ -60,7 +66,27 @@ Generator.dice_roll= function(dice_frmt){
 }
 
 Generator.rand_weighted = function(array){
+  //make sure array is sorted by weight asc
+  array.sort(function(a, b) {
+      return parseFloat(b.weight) - parseFloat(a.weight);
+  });
 
+  //compute sum of weights
+  var sum = 0;
+  for(var i in array){
+    sum += parseFloat(array[i].weight);
+  }
+
+  var rand = Generator.rand_float(0, sum);
+
+  //loop over array, starting with lowest weight and return the first weight lower than the random number
+  for(var i in array){
+    rand -= parseFloat(array[i].weight)
+    console.log(rand)
+    if(rand <= 0){
+      return array[i];
+    }
+  }
 }
 
 /*
@@ -70,7 +96,7 @@ Generator.rand_weighted = function(array){
 Generator.random_weapon = function(json){
   console.log('Generating weapon.');
 
-  var index = Generator.rand_range(1, json.weapons.length) - 1;
+  var index = Generator.rand_int(1, json.weapons.length) - 1;
   var weapon = json.weapons[index];
 
   return new Weapon(weapon.name, weapon.damage, weapon.description, weapon);
@@ -83,7 +109,7 @@ Generator.random_weapon = function(json){
 Generator.random_item = function(json){
   console.log('Generating item.');
 
-  var index = Generator.rand_range(1, json.items.length) - 1;
+  var index = Generator.rand_int(1, json.items.length) - 1;
   var item = json.items[index];
 
   return Item.fromJson(item);
@@ -96,7 +122,7 @@ Generator.random_item = function(json){
 Generator.random_armor = function(json){
   console.log('Generate armor.');
 
-  var index = Generator.rand_range(1, json.armor.length) - 1;
+  var index = Generator.rand_int(1, json.armor.length) - 1;
   var armor = json.armor[index];
 
   return new Armor(armor.name, armor.ac, armor.description, armor);
@@ -109,7 +135,7 @@ Generator.random_armor = function(json){
 Generator.random_race = function(json){
   console.log('Generate race.');
 
-  var index = Generator.rand_range(1, json.races.length) - 1;
+  var index = Generator.rand_int(1, json.races.length) - 1;
   var race = json.races[index];
 
   return race.name;
@@ -122,8 +148,7 @@ Generator.random_race = function(json){
 Generator.random_type = function(json){
   console.log('Generate type.');
 
-  var index = Generator.rand_range(1, json.types.length) - 1;
-  var type = json.types[index];
+  var type = Generator.rand_weighted(json.types);
 
   return new Type(type.name, type);
 };
