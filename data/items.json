@@ -1,28 +1,38 @@
 {
   "races" : [
-    {"id" : 0, "name" : "dwarf"},
-    {"id" : 1, "name" : "gnome"},
-    {"id" : 2, "name" : "human"},
-    {"id" : 3, "name" : "half-orc"},
-    {"id" : 4, "name" : "elf"}
+    { "name" : "dwarf"},
+    { "name" : "gnome"},
+    { "name" : "human"},
+    { "name" : "half-orc"},
+    { "name" : "elf"}
   ],
   "types" : [
-    {"id" : 0, "name" : "man-at-arms"},
-    {"id" : 1, "name" : "torch bearer", "dependencies" : ["items.inventory[0]"]}
+    { "name" : "man-at-arms", "weight" : ".1" },
+    { "name" : "torch bearer",
+      "weight" : ".9",
+      "weapons": [
+        { "name" : "dagger", "damage" : "1d4", "description" : "a small dagger" }
+      ],
+      "items" : [
+        { "name" : "torch", "description": "provides light in the darkness", "quantity" : "1d4" }
+      ]
+    }
   ],
-  "items" : {
-    "weapons":[
-      { "id" : 0, "name" : "dagger", "damage" : "1d4", "description" : "a small dagger" },
-      { "id" : 1, "name": "short sword", "damage" : "1d6", "description" : "a short sword" },
-      { "id" : 2, "name": "mace", "damage" : "1d6", "description" : "a mace" },
-      { "id" : 3, "name": "short bow", "damage" : "1d6", "description" : "a short bow", "dependencies" : ["items.inventory[1]"] }
-    ],
-    "armor":[
-      { "id" : 0, "name" : "leather", "ac": "8", "description" : "basic leather armor" }
-    ],
-    "inventory":[
-      { "id" : 0, "name" : "torch", "description": "provides light in the darkness", "quantity" : "1d4" },
-      { "id" : 1, "name" : "arrows", "description" : "arrows for a bow", "quantity" : "2d10+5" }
-    ]
-  }
+  "weapons":[
+    { "name": "short sword", "damage" : "1d6", "description" : "a short sword" },
+    { "name": "mace", "damage" : "1d6", "description" : "a mace" },
+    { "name": "short bow", "damage" : "1d6", "description" : "a short bow",
+      "items" : [
+        { "name" : "arrow", "description" : "arrows for a bow", "quantity" : "2d10+5" }
+      ]
+    },
+    { "name": "crossbow", "damage" : "1d8", "description" : "a crossbow that must be reloaded for an entire round after firing",
+      "items" : [
+        { "name" : "bolt", "description" : "bolts for a crossbow", "quantity" : "2d10+5" }
+      ]
+    }
+  ],
+  "armor":[
+    { "name" : "leather", "ac": "8", "description" : "basic leather armor" }
+  ]
 }

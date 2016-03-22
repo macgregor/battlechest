@@ -1,23 +1,43 @@
-function Generator(){
-  var tmp;
+function Generator(){}
+
+/*
+ * Load a json structure to be used as the generator's data source.
+ */
+Generator.load_json = function(filename='data/items.json'){
+  var json_data;
   $.ajax({
-  	url: 'data/items.json',
+  	url: filename,
   	async: false,
   	dataType: 'json',
   	success: function(data) {
-  		tmp = data;
+  		json_data = data;
   	}
   });
 
-  this.json_data = tmp;
-  console.log(this.json_data);
+  console.log(json_data);
+  return json_data;
 }
 
-Generator.prototype.rand_range = function(low, high){
-  return Math.floor((Math.random() * high) + low); 
+/*
+ * Generate a random number between low and high, inclusive
+ */
+Generator.rand_range = function(low, high){
+  return Math.floor((Math.random() * high) + low);
 }
 
-Generator.prototype.dice_roll= function(dice_frmt){
+/*
+ * Generate a random number based on a dice roll (e.g. 1d6, 2d8, 1d20+5)
+ * The first number represents how many dice to roll, the number after the d
+ * represents the number of sides on the dice and the optional + specifies
+ * how much to add after the roll.
+ *
+ * For example:
+ *    '1d6'    - rolls a single 6 sided die, returns a number between 1 and 6, inclusively
+ *    '2d8'    - rolls two 8 sided dice, returns a number 2 through 16 inclusively
+ *    '1d20+5' - rolls a single 20 sided die then adds 5 to the result,
+ *               returns a number 6 through 25 inclusively
+ */
+Generator.dice_roll= function(dice_frmt){
   var regex = /^(\d+)d(\d+)\+*(\d*)$/;
   var matches = regex.exec(dice_frmt);
   console.log(matches);
@@ -39,57 +59,76 @@ Generator.prototype.dice_roll= function(dice_frmt){
   return roll;
 }
 
-Generator.prototype.generate_weapon = function(){
+Generator.rand_weighted = function(array){
+
+}
+
+/*
+ * Given a json structure containing an array "weapons", return
+ * a new Weapon object built from a random weapon in the array
+ */
+Generator.random_weapon = function(json){
   console.log('Generating weapon.');
 
-  var index = this.rand_range(1, this.json_data.items.weapons.length) - 1;
-  var weapon = this.json_data.items.weapons[index];
+  var index = Generator.rand_range(1, json.weapons.length) - 1;
+  var weapon = json.weapons[index];
 
-  return new Weapon(weapon.name, weapon.damage, weapon.description);
+  return new Weapon(weapon.name, weapon.damage, weapon.description, weapon);
 };
 
-Generator.prototype.generate_item = function(){
+/*
+ * Given a json structure containing an array "items", return
+ * a new Item object built from a random item in the array
+ */
+Generator.random_item = function(json){
   console.log('Generating item.');
 
-  var index = this.rand_range(1, this.json_data.items.inventory.length) - 1;
-  var item = this.json_data.items.inventory[index];
-  var quantity = "1";
+  var index = Generator.rand_range(1, json.items.length) - 1;
+  var item = json.items[index];
 
-  if(item.hasOwnProperty("quantity")){
-    quantity = this.dice_roll(item.quantity);
-  }
-
-  return new Item(item.name, quantity, item.description);
+  return Item.fromJson(item);
 };
 
-Generator.prototype.generate_armor = function(){
+/*
+ * Given a json structure containing an array "armor", return
+ * a new Armor object built from a random piece of armor in the array
+ */
+Generator.random_armor = function(json){
   console.log('Generate armor.');
 
-  var index = this.rand_range(1, this.json_data.items.armor.length) - 1;
-  var armor = this.json_data.items.armor[index];
+  var index = Generator.rand_range(1, json.armor.length) - 1;
+  var armor = json.armor[index];
 
-  return new Armor(armor.name, armor.ac, armor.description);
+  return new Armor(armor.name, armor.ac, armor.description, armor);
 };
 
-Generator.prototype.generate_race = function(){
+/*
+ * Given a json structure containing an array "races", return
+ * a random Race's name from the array
+ */
+Generator.random_race = function(json){
   console.log('Generate race.');
 
-  var index = this.rand_range(1, this.json_data.races.length) - 1;
-  var race = this.json_data.races[index];
+  var index = Generator.rand_range(1, json.races.length) - 1;
+  var race = json.races[index];
 
   return race.name;
 };
 
-Generator.prototype.generate_type = function(){
+/*
+ * Given a json structure containing an array "types", return
+ * a random Type's name from the array
+ */
+Generator.random_type = function(json){
   console.log('Generate type.');
 
-  var index = this.rand_range(1, this.json_data.types.length) - 1;
-  var type = this.json_data.types[index];
+  var index = Generator.rand_range(1, json.types.length) - 1;
+  var type = json.types[index];
 
-  return type.name;
+  return new Type(type.name, type);
 };
 
-Generator.prototype.generate_name = function(){
+Generator.random_name = function(){
   console.log('Generate name.');
 
   var generator = NameGen.compile("sV'i");
@@ -97,35 +136,89 @@ Generator.prototype.generate_name = function(){
   return generator.toString();
 };
 
-Generator.prototype.generate_meatshield = function(){
+/*
+ * Given a very specific json structure I wish I had a better way of validating,
+ * generate a random NPC (meatshield) having a name, race, type, health (HP), weapons
+ * armor and inventory.
+ */
+Generator.random_meatshield = function(json){
   console.log('Generating meatshield');
 
-  var hp = this.dice_roll("1d6");
-  var name = this.generate_name();
-  var type = this.generate_type();
-  var race = this.generate_race();
-  var weapon = [this.generate_weapon()];
-  var armor = [this.generate_armor()];
-  var inventory = [this.generate_item()];
-  return new Meatshield(name, type, race, hp, weapon, armor, inventory);
+  var hp = Generator.dice_roll("1d6");
+  var name = Generator.random_name(json);
+  var type = Generator.random_type(json);
+  var race = Generator.random_race(json);
+  var weapons = [];
+  var armor = [];
+  var inventory = [];
+
+  //use type as the root json structure if it has weapons specific to that type of meatshield
+  if(type.raw_json.hasOwnProperty("weapons")){
+    weapons.push(Generator.random_weapon(type.raw_json));
+  } else{
+    weapons.push(Generator.random_weapon(json));
+  }
+
+  //type specific armor restrictions
+  if(type.raw_json.hasOwnProperty("armor")){
+    armor.push(Generator.random_armor(type.raw_json));
+  } else{
+    armor.push(Generator.random_armor(json));
+  }
+
+  //generate weapon item dependencies (e.g. bows need arrows)
+  for(var i in weapons){
+    if(weapons[i].raw_json.hasOwnProperty("items")){
+      for(var j in weapons[i].items){
+        inventory.push(Item.fromJson(weapons[i].items[j]));
+      }
+    }
+  }
+
+  //generate type required items (e.g. torch bearers need torches)
+  if(type.raw_json.hasOwnProperty("items")){
+    for(var i in type.raw_json.items){
+      inventory.push(Item.fromJson(type.raw_json.items[i]));
+    }
+  }
+
+  return new Meatshield(name, type, race, hp, weapons, armor, inventory);
 };
 
-function Weapon(name, damage, description){
+function Type(name, raw_json){
+  this.name = name;
+  this.raw_json = raw_json;
+}
+
+function Weapon(name, damage, description, raw_json){
   this.name = name;
   this.damage = damage;
   this.description = description;
+  this.raw_json = raw_json;
 }
 
-function Item(name, quantity, description){
+function Item(name, quantity, description, raw_json){
   this.name = name;
   this.quantity = quantity;
   this.description = description;
+  this.raw_json = raw_json;
 }
 
-function Armor(name, ac, description){
+Item.fromJson = function(item_json){
+  var quantity = "1";
+
+  if(item_json.hasOwnProperty("quantity")){
+    quantity = Generator.dice_roll(item_json.quantity);
+  }
+
+  return new Item(item_json.name, quantity, item_json.description, item_json);
+}
+
+function Armor(name, ac, description, raw_json){
   this.name = name;
   this.ac = ac;
   this.description = description;
+  this.raw_json = raw_json;
 }
 
 function Meatshield (name, type, race, hp, weapons, armor, inventory) {

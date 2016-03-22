@@ -14,7 +14,7 @@ function runMasonry() {
 
 $(document).ready(function() {
 
-  var generator = new Generator();
+  var generator_data = Generator.load_json();
   var source = $("#template").html();
   var template = Handlebars.compile(source);
   var meatshields = getLocalData();
@@ -24,9 +24,9 @@ $(document).ready(function() {
   }
 
   runMasonry();
-  
+
   $("#generate-character").click(function(){
-    var new_meatshield = generator.generate_meatshield();
+    var new_meatshield = Generator.random_meatshield(generator_data);
     console.log(new_meatshield);
 
     meatshields.push(new_meatshield);
@@ -37,12 +37,12 @@ $(document).ready(function() {
     $('#meatshield').masonry('layout');
 
     $("html, body").animate({ scrollTop: $(document).height() }, "slow");
-  }); 
+  });
 
   $("#clear_data").click(function(){
     clearLocalData()
     $('#meatshield').html("");
     $('#meatshield').masonry('reloadItems');
     $('#meatshield').masonry('layout');
-  }); 
+  });
 });
