@@ -32,6 +32,10 @@ body {
   margin-right: 10px;
 }
 
+#collapseable li button {
+  float: right;
+}
+
 #delete-meatshield {
     position: absolute;
     right: 7px;
@@ -90,7 +94,7 @@ body {
   text-align: left;
   font-size: 2em;
   width: 100%;
-  padding-right: .0825em;
+  padding-right: 1.1em;
   color: #46494C;
   font-weight: 400;
 }

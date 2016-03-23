@@ -59,7 +59,6 @@ $(document).ready(function() {
   });
 
   $(document).on("click", '#delete-meatshield', function(){
-    alert("click");
     $(this).closest('.character').remove();
     $('#meatshield').masonry('reloadItems');
     $('#meatshield').masonry('layout');
