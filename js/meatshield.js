@@ -3,7 +3,7 @@ function Generator(){}
 /*
  * Load a json structure to be used as the generator's data source.
  */
-Generator.load_json = function(filename='data/items.json'){
+Generator.load_json = function(filename){
   var json_data;
   $.ajax({
   	url: filename,
@@ -96,7 +96,7 @@ Generator.rand_weighted = function(array){
 Generator.random_weapon = function(json){
   console.log('Generating weapon.');
 
-  var index = Generator.rand_int(1, json.weapons.length) - 1;
+  var index = Generator.rand_int(0, json.weapons.length-1);
   var weapon = json.weapons[index];
 
   return new Weapon(weapon.name, weapon.damage, weapon.description, weapon);
@@ -109,7 +109,7 @@ Generator.random_weapon = function(json){
 Generator.random_item = function(json){
   console.log('Generating item.');
 
-  var index = Generator.rand_int(1, json.items.length) - 1;
+  var index = Generator.rand_int(0, json.items.length-1);
   var item = json.items[index];
 
   return Item.fromJson(item);
@@ -122,7 +122,7 @@ Generator.random_item = function(json){
 Generator.random_armor = function(json){
   console.log('Generate armor.');
 
-  var index = Generator.rand_int(1, json.armor.length) - 1;
+  var index = Generator.rand_int(0, json.armor.length-1);
   var armor = json.armor[index];
 
   return new Armor(armor.name, armor.ac, armor.description, armor);
@@ -135,7 +135,7 @@ Generator.random_armor = function(json){
 Generator.random_race = function(json){
   console.log('Generate race.');
 
-  var index = Generator.rand_int(1, json.races.length) - 1;
+  var index = Generator.rand_int(0, json.races.length-1);
   var race = json.races[index];
 
   return race.name;
@@ -153,12 +153,16 @@ Generator.random_type = function(json){
   return new Type(type.name, type);
 };
 
-Generator.random_name = function(){
+Generator.random_name = function(first_names_json, last_names_json){
   console.log('Generate name.');
 
-  var generator = NameGen.compile("sV'i");
+  var index = Generator.rand_int(0, first_names_json.length-1);
+  var first = first_names_json[index];
 
-  return generator.toString();
+  index = Generator.rand_int(0, last_names_json.length-1);
+  var last = last_names_json[index];
+
+  return first + ' ' + last;
 };
 
 /*
@@ -166,13 +170,13 @@ Generator.random_name = function(){
  * generate a random NPC (meatshield) having a name, race, type, health (HP), weapons
  * armor and inventory.
  */
-Generator.random_meatshield = function(json){
+Generator.random_meatshield = function(meatshield_json, first_names_json, last_names_json){
   console.log('Generating meatshield');
 
   var hp = Generator.dice_roll("1d6");
-  var name = Generator.random_name(json);
-  var type = Generator.random_type(json);
-  var race = Generator.random_race(json);
+  var name = Generator.random_name(first_names_json, last_names_json);
+  var type = Generator.random_type(meatshield_json);
+  var race = Generator.random_race(meatshield_json);
   var weapons = [];
   var armor = [];
   var inventory = [];
@@ -181,21 +185,22 @@ Generator.random_meatshield = function(json){
   if(type.raw_json.hasOwnProperty("weapons")){
     weapons.push(Generator.random_weapon(type.raw_json));
   } else{
-    weapons.push(Generator.random_weapon(json));
+    weapons.push(Generator.random_weapon(meatshield_json));
   }
 
   //type specific armor restrictions
   if(type.raw_json.hasOwnProperty("armor")){
     armor.push(Generator.random_armor(type.raw_json));
   } else{
-    armor.push(Generator.random_armor(json));
+    armor.push(Generator.random_armor(meatshield_json));
   }
 
   //generate weapon item dependencies (e.g. bows need arrows)
   for(var i in weapons){
+    console.log(weapons[i].raw_json);
     if(weapons[i].raw_json.hasOwnProperty("items")){
-      for(var j in weapons[i].items){
-        inventory.push(Item.fromJson(weapons[i].items[j]));
+      for(var j in weapons[i].raw_json.items){
+        inventory.push(Item.fromJson(weapons[i].raw_json.items[j]));
       }
     }
   }
@@ -230,6 +235,7 @@ function Item(name, quantity, description, raw_json){
 }
 
 Item.fromJson = function(item_json){
+  console.log("Creating item from json")
   var quantity = "1";
 
   if(item_json.hasOwnProperty("quantity")){

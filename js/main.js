@@ -14,7 +14,9 @@ function runMasonry() {
 
 $(document).ready(function() {
 
-  var generator_data = Generator.load_json();
+  var generator_data = Generator.load_json('data/meatshield.json');
+  var first_names = Generator.load_json('data/first_names.json');
+  var last_names = Generator.load_json('data/last_names.json')
   var source = $("#template").html();
   var template = Handlebars.compile(source);
   var meatshields = getLocalData();
@@ -26,7 +28,7 @@ $(document).ready(function() {
   runMasonry();
 
   $("#generate-character").click(function(){
-    var new_meatshield = Generator.random_meatshield(generator_data);
+    var new_meatshield = Generator.random_meatshield(generator_data, first_names["names"], last_names["names"]);
     console.log(new_meatshield);
 
     meatshields.push(new_meatshield);
