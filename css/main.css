@@ -20,14 +20,30 @@ body {
 
 .navbar-nav {
   float: none!important;
-  margin: 7.5px -15px;
+  margin: 0;
+  padding: 7.5px 15px;
 }
 .navbar-nav>li {
   float: none;
 }
-.navbar-nav>li>a {
+.navbar-nav>li>button {
   padding-top: 10px;
   padding-bottom: 10px;
+  margin-right: 10px;
+}
+
+#delete-meatshield {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    margin: auto;
+    font-size: 2em;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.glyphicon:hover{
+  color: #FF0000;
 }
 
 #generate-character{
@@ -113,7 +129,7 @@ body {
 
 .armor .armor-description{
   width: 100%;
-  text-align: right;  
+  text-align: right;
   font-size: .9em;
 }
 
@@ -128,12 +144,12 @@ body {
   font-size: .9em;
 }
 
-/* Custom, iPhone Retina */ 
+/* Custom, iPhone Retina */
 @media only screen and (min-width : 320px) {
 
 }
 
-/* Extra Small Devices, Phones */ 
+/* Extra Small Devices, Phones */
 @media only screen and (min-width : 480px) {
 }
 

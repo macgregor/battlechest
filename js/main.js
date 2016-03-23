@@ -34,6 +34,7 @@ $(document).ready(function() {
     meatshields.push(new_meatshield);
     updateLocalData(meatshields);
 
+
     $('#meatshield').append(template(new_meatshield));
     $('#meatshield').masonry('reloadItems');
     $('#meatshield').masonry('layout');
@@ -44,6 +45,22 @@ $(document).ready(function() {
   $("#clear_data").click(function(){
     clearLocalData()
     $('#meatshield').html("");
+    $('#meatshield').masonry('reloadItems');
+    $('#meatshield').masonry('layout');
+  });
+
+  $(document).click(function (event) {
+    var clickover = $(event.target);
+    var $navbar = $(".navbar-collapse");
+    var _opened = $navbar.hasClass("in");
+    if (_opened === true && !clickover.hasClass("navbar-toggle")) {
+        $navbar.collapse('hide');
+    }
+  });
+
+  $(document).on("click", '#delete-meatshield', function(){
+    alert("click");
+    $(this).closest('.character').remove();
     $('#meatshield').masonry('reloadItems');
     $('#meatshield').masonry('layout');
   });
