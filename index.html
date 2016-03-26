@@ -34,7 +34,8 @@
         </div>
         <div class="navbar-collapse collapse" id="collapseable">
           <ul class="nav navbar-nav">
-            <li><button id="clear_data" type="button" class="btn btn-primary">Clear Data</button></li>
+            <li><button id="clear_data" type="button" class="btn btn-primary">Clear Data</button></li><br/>
+            <li><button id="undo_delete" type="button" class="btn btn-primary">Undo Delete</button></li>
           </ul>
         </div>
       </nav>
@@ -46,7 +47,7 @@
     </div>
 
     <script id="template" type="text/x-handlebars-template">
-      <div class='character'>
+      <div class='character' id="{{id}}">
           <div><div class='name'>{{name}}</div><span id="delete-meatshield" class="glyph glyphicon glyphicon-remove-circle"></span></div>
           <div class='race'>{{race}}</div>
           <div class='type'>{{type.name}}</div>

@@ -12,6 +12,19 @@ function runMasonry() {
   });
 }
 
+function refreshMasonryGrid(container="#meatshield"){
+  $(container).masonry('reloadItems');
+  $(container).masonry('layout');
+}
+
+function appendMeatshield(meatshield, refresh=false, container="#meatshield"){
+  $(container).append(meatshield);
+
+  if(refresh){
+    refreshMasonryGrid(container);
+  }
+}
+
 $(document).ready(function() {
 
   var generator_data = Generator.load_json('data/meatshield.json');
@@ -20,9 +33,10 @@ $(document).ready(function() {
   var source = $("#template").html();
   var template = Handlebars.compile(source);
   var meatshields = getLocalData();
+  var deleted = [];
 
   for(var i in meatshields){
-    $('#meatshield').append(template(meatshields[i]));
+    appendMeatshield(template(meatshields[i]))
   }
 
   runMasonry();
@@ -31,13 +45,9 @@ $(document).ready(function() {
     var new_meatshield = Generator.random_meatshield(generator_data, first_names["names"], last_names["names"]);
     console.log(new_meatshield);
 
-    meatshields.push(new_meatshield);
+    meatshields[new_meatshield['id']] = new_meatshield;
     updateLocalData(meatshields);
-
-
-    $('#meatshield').append(template(new_meatshield));
-    $('#meatshield').masonry('reloadItems');
-    $('#meatshield').masonry('layout');
+    appendMeatshield(template(new_meatshield), refresh=true);
 
     $("html, body").animate({ scrollTop: $(document).height() }, "slow");
   });
@@ -45,8 +55,17 @@ $(document).ready(function() {
   $("#clear_data").click(function(){
     clearLocalData()
     $('#meatshield').html("");
-    $('#meatshield').masonry('reloadItems');
-    $('#meatshield').masonry('layout');
+    refreshMasonryGrid();
+  });
+
+  $("#undo_delete").click(function(){
+    var undo = deleted.pop();
+
+    if(undo){
+      meatshields[undo.id] = undo;
+      updateLocalData(meatshields);
+      appendMeatshield(template(undo), refresh=true);
+    }
   });
 
   $(document).click(function (event) {
@@ -59,8 +78,11 @@ $(document).ready(function() {
   });
 
   $(document).on("click", '#delete-meatshield', function(){
+    var id = $(this).closest('.character').attr('id');
+    deleted.push(meatshields[id]);
+    delete meatshields[id];
+    updateLocalData(meatshields);
     $(this).closest('.character').remove();
-    $('#meatshield').masonry('reloadItems');
-    $('#meatshield').masonry('layout');
+    refreshMasonryGrid();
   });
 });

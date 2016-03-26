@@ -89,6 +89,16 @@ Generator.rand_weighted = function(array){
   }
 }
 
+Generator.uuid = function() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+};
+
 /*
  * Given a json structure containing an array "weapons", return
  * a new Weapon object built from a random weapon in the array
@@ -212,7 +222,7 @@ Generator.random_meatshield = function(meatshield_json, first_names_json, last_n
     }
   }
 
-  return new Meatshield(name, type, race, hp, weapons, armor, inventory);
+  return new Meatshield(Generator.uuid(), name, type, race, hp, weapons, armor, inventory);
 };
 
 function Type(name, raw_json){
@@ -252,7 +262,8 @@ function Armor(name, ac, description, raw_json){
   this.raw_json = raw_json;
 }
 
-function Meatshield (name, type, race, hp, weapons, armor, inventory) {
+function Meatshield (id, name, type, race, hp, weapons, armor, inventory) {
+  this.id = id;
   this.name = name;
   this.type = type;
   this.race = race;
@@ -263,12 +274,12 @@ function Meatshield (name, type, race, hp, weapons, armor, inventory) {
 }
 
 function getLocalData(){
-  var userData = [];
+  var userData = {};
 
   if( supports_html5_storage() ){
     userData = JSON.parse(localStorage.getItem('meatshields'));
     if(userData == null){
-      userData = []
+      userData = {}
     }
   }
   return userData;
