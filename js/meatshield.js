@@ -65,6 +65,12 @@ Generator.dice_roll= function(dice_frmt){
   return roll;
 }
 
+/*
+ * Pick a random item from a json array where each object in the array has a weight.
+ * for instance [{name:"foo", weight: .9}, {name:"bar", .1}] has a 90% chance of returning
+ * "foo" and a 10% chance of returning "bar". The wights dont have to add up to 1 or 100
+ * but that makes it way easier for a human to understand the odds
+ */
 Generator.rand_weighted = function(array){
   //make sure array is sorted by weight asc
   array.sort(function(a, b) {
@@ -89,6 +95,12 @@ Generator.rand_weighted = function(array){
   }
 }
 
+/*
+ * Generate a UUID, I blatantly copied this from here https://jsfiddle.net/briguy37/2MVFd/
+ * I hear it might be rfc4122 version 4 compliant? I dont really care, just need something
+ * thats most likely uniqueue. If I get collisions, oh well, I've probably won the lottery
+ * by that point
+ */
 Generator.uuid = function() {
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -163,6 +175,9 @@ Generator.random_type = function(json){
   return new Type(type.name, type);
 };
 
+/*
+ * Pick a random first and last name from the given json arrays
+ */
 Generator.random_name = function(first_names_json, last_names_json){
   console.log('Generate name.');
 
@@ -244,6 +259,10 @@ function Item(name, quantity, description, raw_json){
   this.raw_json = raw_json;
 }
 
+/*
+ * Generate an item from its json data. Used for generating item dependencies
+ * e.g. crossbows require bolts
+ */
 Item.fromJson = function(item_json){
   console.log("Creating item from json")
   var quantity = "1";
@@ -273,6 +292,10 @@ function Meatshield (id, name, type, race, hp, weapons, armor, inventory) {
   this.inventory = inventory;
 }
 
+/*
+ * Load meatshields from local storage, returns an empty json structure if there
+ * is no saved data or the browser doesnt support html5 storage
+ */
 function getLocalData(){
   var userData = {};
 
@@ -285,6 +308,9 @@ function getLocalData(){
   return userData;
 }
 
+/*
+ * Save the given json data structue to localdata if html5 local storage is available
+ */
 function updateLocalData(data){
   console.log(data);
   if( supports_html5_storage() ){
@@ -292,12 +318,14 @@ function updateLocalData(data){
   }
 }
 
+/*
+ * clear local storage if it is available
+ */
 function clearLocalData(){
   if( supports_html5_storage() ){
     localStorage.clear()
   }
 }
-
 function supports_html5_storage() {
   try {
     return 'localStorage' in window && window['localStorage'] !== null;
