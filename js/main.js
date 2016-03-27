@@ -25,6 +25,10 @@ function appendMeatshield(meatshield, refresh=false, container="#meatshield"){
   }
 }
 
+function delete_event(meatshields){
+  return { "action" : "delete", "data" : meatshields};
+}
+
 $(document).ready(function() {
 
   var generator_data = Generator.load_json('data/meatshield.json');
@@ -35,6 +39,9 @@ $(document).ready(function() {
   var meatshields = getLocalData();
   var deleted = [];
 
+  //sometimes after using the app and refreshing the undo button is enabled for some reason
+  $('#undo_delete').attr("disabled", true);
+
   for(var i in meatshields){
     appendMeatshield(template(meatshields[i]))
   }
@@ -43,7 +50,6 @@ $(document).ready(function() {
 
   $("#generate-character").click(function(){
     var new_meatshield = Generator.random_meatshield(generator_data, first_names["names"], last_names["names"]);
-    console.log(new_meatshield);
 
     meatshields[new_meatshield['id']] = new_meatshield;
     updateLocalData(meatshields);
@@ -53,6 +59,17 @@ $(document).ready(function() {
   });
 
   $("#clear_data").click(function(){
+    var to_delete = [];
+    $.each(meatshields, function(id, meatshield) {
+      to_delete.push(meatshield);
+      delete meatshields[id];
+    });
+
+    if(to_delete.length > 0){
+      deleted.push(delete_event(to_delete));
+      $('#undo_delete').attr("disabled", false);
+    }
+
     clearLocalData()
     $('#meatshield').html("");
     refreshMasonryGrid();
@@ -62,9 +79,17 @@ $(document).ready(function() {
     var undo = deleted.pop();
 
     if(undo){
-      meatshields[undo.id] = undo;
+      for(var i in undo.data){
+        meatshields[undo.data[i].id] = undo.data[i];
+        appendMeatshield(template(undo.data[i]));
+      }
+
       updateLocalData(meatshields);
-      appendMeatshield(template(undo), refresh=true);
+      refreshMasonryGrid();
+    }
+
+    if(deleted.length == 0){
+      $('#undo_delete').attr("disabled", true);
     }
   });
 
@@ -79,7 +104,9 @@ $(document).ready(function() {
 
   $(document).on("click", '#delete-meatshield', function(){
     var id = $(this).closest('.character').attr('id');
-    deleted.push(meatshields[id]);
+    deleted.push(delete_event([meatshields[i]]));
+    $('#undo_delete').attr("disabled", false);
+
     delete meatshields[id];
     updateLocalData(meatshields);
     $(this).closest('.character').remove();
