@@ -1,103 +1,157 @@
-function rand_range(low, high){
-  return Math.floor((Math.random() * high) + low); 
-}
+/*
+ * Configures Masonry for a responsive card layout
+ */
+function initMasonry() {
+  var container = $('#meatshield');
 
-function dice_roll(dice_frmt){
-  var regex = /^(\d+)d(\d+)\+*(\d*)$/;
-  var matches = regex.exec(dice_frmt);
-  console.log(matches);
-
-  var num_dice = parseInt(matches[1]);
-  var sides = parseInt(matches[2]);
-  var bonus = 0;
-  if(matches[3] !== ""){
-    bonus = parseInt(matches[3]);
-  }
-
-  var roll = 0;
-
-  for(var i = 0; i < matches[1]; i++){
-    roll += rand_range(1, sides);
-  }
-
-  roll += bonus;
-  return roll;
-}
-
-function load_data(file, callback){
-    var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', file, true); // Replace 'my_data' with the path to your file
-    xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
-            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
-            try {
-              json = JSON.parse(xobj.responseText);
-              callback(json);
-            }
-            catch(err) {
-              console.log(err);
-            }
-          }
-    };
-    xobj.send(null); 
-}
-
-function generate_weapon(json){
-  var weapon = rand_range(1, json.items.weapons.length) - 1;
-  return "<p><b>" + json.items.weapons[weapon].name + "</b> ("+json.items.weapons[weapon].damage+")<br/>" +
-    json.items.weapons[weapon].description + "</p>";
-}
-
-function generate_armor(json){
-  var armor = rand_range(1, json.items.armor.length) - 1;
-  return "<p><b>" + json.items.armor[armor].name + "</b> (AC "+json.items.armor[armor].ac+")<br/>" +
-    json.items.armor[armor].description + "</p>";
-}
-
-function generate_inventory(json){
-  var inventory = rand_range(1, json.items.inventory.length) - 1;
-  var quantity = "1";
-
-  if(json.items.inventory[inventory].hasOwnProperty("quantity")){
-    quantity = dice_roll(json.items.inventory[inventory].quantity);
-  }
-
-  return "<p><b>" + json.items.inventory[inventory].name + "</b>("+quantity+")<br/>" +
-    json.items.inventory[inventory].description + "</p>";
-}
-
-function generate_meatshield(){
-  load_data('./json/items.json', function(json){
-    var hp = dice_roll("1d6");
-    var name = "Someone";
-    var type = "Man-at-arms";
-
-    var row_html = '<tr class="table-hover">' +
-      '<td class="col-sm-3">'+name+'</td>'+
-      '<td class="col-sm-2">'+type+'</td>'+
-      '<td class="col-sm-1">'+hp+'</td>'+
-      '<td class="col-sm-2">'+generate_weapon(json)+'</td>'+
-      '<td class="col-sm-2">'+generate_armor(json)+'</td>'+
-      '<td class="col-sm-2">'+generate_inventory(json)+'</td>'+
-      '</tr>';
-
-    $('#character-table tbody tr:last').after(row_html);
+  container.masonry({
+    columnWidth: 60,
+    itemSelector: '.character',
+    containerStyle: null,
+    isAnimated: true,
+    gutter: 14,
+    isFitWidth: true
   });
 }
 
+/*
+ * Refreshes the masonry grid, used after modifying the underlying html dom
+ * (adding or deleting a meatshield)
+ */
+function refreshMasonryGrid(container="#meatshield"){
+  $(container).masonry('reloadItems');
+  $(container).masonry('layout');
+}
+
+/*
+ * Append a meatshield to the html dom and (optionally) refresh the masonry grid
+ */
+function appendMeatshield(meatshield, refresh=false, container="#meatshield"){
+  $(container).append(meatshield);
+
+  if(refresh){
+    refreshMasonryGrid(container);
+  }
+}
+
+/*
+ * Create a delete event, basically a simple json structure
+ * that stores an array of meatshields that were deleted in an action.
+ * Deleting a single meatshield via the card will yield a delete event with
+ * an array length of 1, using the clear data button will yield an event
+ * with all meatshields at the time of the delete.
+ */
+function delete_event(meatshields){
+  return { "action" : "delete", "data" : meatshields};
+}
+
+/*
+ * main method
+ */
 $(document).ready(function() {
-  $('table').stickyTableHeaders({scrollableArea: $('.scrollable-area')});
 
+  //load generator json data
+  var generator_data = Generator.load_json('data/meatshield.json');
+  var first_names = Generator.load_json('data/first_names.json');
+  var last_names = Generator.load_json('data/last_names.json');
+
+  //create handlebars tmeplate for generating meatshield dom elements
+  var source = $("#template").html();
+  var template = Handlebars.compile(source);
+
+  //sometimes after using the app and refreshing the undo button is enabled for some reason
+  $('#undo_delete').attr("disabled", true);
+
+
+  //load meatshield data from localdata, meatshields is a json structure that acts as a hashmap
+  //of meatshield id to meatshield json, map needed to manage deleting/undoing
+  var meatshields = getLocalData();
+  var deleted = [];
+
+  //create dom elements for meatshields loaded from saved data
+  for(var i in meatshields){
+    appendMeatshield(template(meatshields[i]))
+  }
+
+  initMasonry();
+
+  //generate-character on click handler
   $("#generate-character").click(function(){
-    generate_meatshield();
-  }); 
+    var new_meatshield = Generator.random_meatshield(generator_data, first_names["names"], last_names["names"]);
 
-  $(".nav a").on("click", function(){
-    $(".nav").find(".active").removeClass("active");
-    $(this).parent().addClass("active");
+    meatshields[new_meatshield['id']] = new_meatshield;
+    updateLocalData(meatshields);
+    appendMeatshield(template(new_meatshield), refresh=true);
 
-    $('div.content').addClass("hidden");
-    $( $(this).attr('href') ).parent().removeClass("hidden");
+    //scroll to the newly generated card,
+    //TODO: doesnt work so great on mobile or when you generate alot of meatshields quickly
+    $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+  });
+
+  //clear_data on click handler
+  $("#clear_data").click(function(){
+    //meatshield json map -> array so we can add the arry to a delete event
+    var to_delete = [];
+    $.each(meatshields, function(id, meatshield) {
+      to_delete.push(meatshield);
+      delete meatshields[id];
+    });
+
+    //they can press clear even when there is no data so need to check length of array
+    if(to_delete.length > 0){
+      deleted.push(delete_event(to_delete));
+      $('#undo_delete').attr("disabled", false);
+    }
+
+    //clear the local data and refresh masonry grid
+    clearLocalData()
+    $('#meatshield').html("");
+    refreshMasonryGrid();
+  });
+
+  //undo_delete on click handler
+  $("#undo_delete").click(function(){
+    var undo = deleted.pop();
+
+    if(undo){
+      //add each meatshield in the delete event data array back to the dom
+      for(var i in undo.data){
+        meatshields[undo.data[i].id] = undo.data[i];
+        appendMeatshield(template(undo.data[i]));
+      }
+
+      updateLocalData(meatshields);
+      refreshMasonryGrid();
+    }
+
+    if(deleted.length == 0){
+      $('#undo_delete').attr("disabled", true);
+    }
+  });
+
+  //this hides the bootstrap collabsible nav when you click anywhere which works but isnt ideal
+  //TODO: maybe try to tie this into when the nav bar or any of its children lose focus
+  $(document).click(function (event) {
+    var clickover = $(event.target);
+    var $navbar = $(".navbar-collapse");
+    var _opened = $navbar.hasClass("in");
+    if (_opened === true && !clickover.hasClass("navbar-toggle")) {
+        $navbar.collapse('hide');
+    }
+  });
+
+  //add a delegate click handler to the page to add on click listeners to the dynamically
+  //generated meatshield elements. Handles deleting the card that was clicked on
+  $(document).on("click", '#delete-meatshield', function(){
+    //get the id off the dom element to find it in the json map
+    var id = $(this).closest('.character').attr('id');
+
+    deleted.push(delete_event([meatshields[i]]));
+    $('#undo_delete').attr("disabled", false);
+    delete meatshields[id];
+
+    updateLocalData(meatshields);
+    $(this).closest('.character').remove();
+    refreshMasonryGrid();
   });
 });

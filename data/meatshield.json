@@ -1,0 +1,38 @@
+{
+  "races" : [
+    { "name" : "dwarf"},
+    { "name" : "gnome"},
+    { "name" : "human"},
+    { "name" : "half-orc"},
+    { "name" : "elf"}
+  ],
+  "types" : [
+    { "name" : "man-at-arms", "weight" : ".7" },
+    { "name" : "torch bearer",
+      "weight" : ".3",
+      "weapons": [
+        { "name" : "dagger", "damage" : "1d4", "description" : "a small dagger" }
+      ],
+      "items" : [
+        { "name" : "torch", "description": "provides light in the darkness", "quantity" : "1d4" }
+      ]
+    }
+  ],
+  "weapons":[
+    { "name": "short sword", "damage" : "1d6", "description" : "a short sword" },
+    { "name": "mace", "damage" : "1d6", "description" : "a mace" },
+    { "name": "short bow", "damage" : "1d6", "description" : "a short bow",
+      "items" : [
+        { "name" : "arrow", "description" : "arrows for a bow", "quantity" : "2d10+5" }
+      ]
+    },
+    { "name": "crossbow", "damage" : "1d8", "description" : "a crossbow that must be reloaded for an entire round after firing",
+      "items" : [
+        { "name" : "bolt", "description" : "bolts for a crossbow", "quantity" : "2d10+5" }
+      ]
+    }
+  ],
+  "armor":[
+    { "name" : "leather", "ac": "8", "description" : "basic leather armor" }
+  ]
+}
