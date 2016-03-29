@@ -129,15 +129,9 @@ $(document).ready(function() {
     }
   });
 
-  //this hides the bootstrap collabsible nav when you click anywhere which works but isnt ideal
-  //TODO: maybe try to tie this into when the nav bar or any of its children lose focus
-  $(document).click(function (event) {
-    var clickover = $(event.target);
-    var $navbar = $(".navbar-collapse");
-    var _opened = $navbar.hasClass("in");
-    if (_opened === true && !clickover.hasClass("navbar-toggle")) {
-        $navbar.collapse('hide');
-    }
+  //this hides the bootstrap collabsible nav when mouse leaves the navbar
+  $(".navbar").mouseleave(() => {
+    $(".navbar-collapse.in").collapse('hide');
   });
 
   //add a delegate click handler to the page to add on click listeners to the dynamically
