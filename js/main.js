@@ -134,6 +134,10 @@ $(document).ready(function() {
     $(".navbar-collapse.in").collapse('hide');
   });
 
+  $('body').on('touchstart', () => {
+    $(".navbar-collapse.in").collapse('hide');
+  });
+
   //add a delegate click handler to the page to add on click listeners to the dynamically
   //generated meatshield elements. Handles deleting the card that was clicked on
   $(document).on("click", '#delete-meatshield', function(){
