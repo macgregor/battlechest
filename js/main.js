@@ -60,7 +60,7 @@ $(document).ready(function() {
   var template = Handlebars.compile(source);
 
   //sometimes after using the app and refreshing the undo button is enabled for some reason
-  $('#undo_delete').attr("disabled", true);
+  $('#undo_delete').parent().addClass("disabled");
 
 
   //load meatshield data from localdata, meatshields is a json structure that acts as a hashmap
@@ -100,7 +100,7 @@ $(document).ready(function() {
     //they can press clear even when there is no data so need to check length of array
     if(to_delete.length > 0){
       deleted.push(delete_event(to_delete));
-      $('#undo_delete').attr("disabled", false);
+      $('#undo_delete').parent().removeClass("disabled");
     }
 
     //clear the local data and refresh masonry grid
@@ -125,17 +125,8 @@ $(document).ready(function() {
     }
 
     if(deleted.length == 0){
-      $('#undo_delete').attr("disabled", true);
+      $('#undo_delete').parent().addClass("disabled");
     }
-  });
-
-  //this hides the bootstrap collabsible nav when mouse leaves the navbar
-  $(".navbar").mouseleave(() => {
-    $(".navbar-collapse.in").collapse('hide');
-  });
-
-  $('body').on('touchstart', () => {
-    $(".navbar-collapse.in").collapse('hide');
   });
 
   //add a delegate click handler to the page to add on click listeners to the dynamically
@@ -145,7 +136,7 @@ $(document).ready(function() {
     var id = $(this).closest('.character').attr('id');
 
     deleted.push(delete_event([meatshields[id]]));
-    $('#undo_delete').attr("disabled", false);
+    $('#undo_delete').parent().removeClass("disabled");
     delete meatshields[id];
 
     updateLocalData(meatshields);

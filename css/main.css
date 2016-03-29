@@ -2,38 +2,35 @@ body {
   padding-top: 50px;
 }
 
-.navbar-header {
-  float: none;
-}
-.navbar-toggle {
-  display: block;
-}
-.navbar-collapse {
-  border-top: 1px solid transparent;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-}
-.navbar-collapse.collapse {
-  display: none!important;
+.dropdown-toggle{
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  padding: 0 !important;
 }
 
-.navbar-collapse.collapse.in { display: block!important; }
-
-.navbar-nav {
-  float: none!important;
-  margin: 0;
-  padding: 7.5px 15px;
-}
-.navbar-nav>li {
-  float: none;
-}
-.navbar-nav>li>button {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-right: 5px;
+.dropdown-menu{
+  position: absolute;
+  top: 55px;
+  right: 20px !important;
 }
 
-#collapseable li button {
+.dropdown-menu span {
   float: right;
+  top: -1.2em;
+}
+
+.dropdown-menu a {
+  font-size: 1.2em;
+}
+
+.dropdown-menu .divider {
+  width: 100%;
+}
+
+#tools {
+  font-size: 2em;
+  margin-right: 15px;
 }
 
 #delete-meatshield {
@@ -46,7 +43,7 @@ body {
     z-index: 3;
 }
 
-.glyphicon:hover{
+.character .glyphicon:hover{
   color: #FF0000;
 }
 
