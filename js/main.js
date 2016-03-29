@@ -140,7 +140,7 @@ $(document).ready(function() {
     //get the id off the dom element to find it in the json map
     var id = $(this).closest('.character').attr('id');
 
-    deleted.push(delete_event([meatshields[i]]));
+    deleted.push(delete_event([meatshields[id]]));
     $('#undo_delete').attr("disabled", false);
     delete meatshields[id];
 
