@@ -15,6 +15,9 @@
       ],
       "items" : [
         { "name" : "torch", "description": "provides light in the darkness", "quantity" : "1d4" }
+      ],
+      "armor": [
+        { "name" : "none", "ac": "9", "description" : "nekked" }
       ]
     }
   ],
@@ -33,6 +36,7 @@
     }
   ],
   "armor":[
-    { "name" : "leather", "ac": "8", "description" : "basic leather armor" }
+    { "name" : "leather", "ac": "8", "description" : "basic leather armor", "weight" : ".8" },
+    { "name" : "none", "ac": "9", "description" : "nekked", "weight" : ".2"}
   ]
 }

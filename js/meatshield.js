@@ -144,8 +144,13 @@ Generator.random_item = function(json){
 Generator.random_armor = function(json){
   console.log('Generate armor.');
 
-  var index = Generator.rand_int(0, json.armor.length-1);
-  var armor = json.armor[index];
+  var armor;
+  if(json.armor[0].hasOwnProperty("weight")){
+    armor = Generator.rand_weighted(json.armor);
+  } else{
+    var index = Generator.rand_int(0, json.armor.length-1);
+    armor = json.armor[index];
+  }
 
   return new Armor(armor.name, armor.ac, armor.description, armor);
 };
