@@ -203,7 +203,7 @@ Generator.random_name = function(first_names_json, last_names_json){
 Generator.random_meatshield = function(meatshield_json, first_names_json, last_names_json){
   console.log('Generating meatshield');
 
-  var hp = Generator.dice_roll("1d6");
+  var hp = Generator.dice_roll("1d4+2");
   var name = Generator.random_name(first_names_json, last_names_json);
   var type = Generator.random_type(meatshield_json);
   var race = Generator.random_race(meatshield_json);
