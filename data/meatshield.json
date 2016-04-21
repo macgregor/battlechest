@@ -26,7 +26,7 @@
         { "name" : "arrow", "description" : "arrows for a bow", "quantity" : "2d10+5" }
       ]
     },
-    { "name": "crossbow", "damage" : "1d8", "description" : "a crossbow that must be reloaded for an entire round after firing",
+    { "name": "light crossbow", "damage" : "1d6", "description" : "a crossbow that must be reloaded for an entire round after firing",
       "items" : [
         { "name" : "bolt", "description" : "bolts for a crossbow", "quantity" : "2d10+5" }
       ]
