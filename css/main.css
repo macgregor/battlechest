@@ -2,6 +2,14 @@ body {
   padding-top: 50px;
 }
 
+.navbar-nav{
+  margin: 0;
+}
+
+.navbar-header{
+  float: left;
+}
+
 .dropdown-toggle{
   position: absolute;
   right: 12px;
@@ -31,6 +39,7 @@ body {
 #tools {
   font-size: 2em;
   margin-right: 15px;
+  float: right;
 }
 
 #delete-meatshield {
@@ -174,6 +183,11 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;
     margin-right: 10px;
+  }
+
+  .dropdown-menu span {
+    float: right;
+    top: -1.2em;
   }
 }
 
